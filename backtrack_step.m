@@ -1,7 +1,14 @@
 function [step_t] = ...
-backtrack_step(w,u,v,lambda,Delta_w,Delta_u,Delta_v,Delta_lambda,H,y,t,C,alpha,step_beta)
-%UNTITLED8 Summary of this function goes here
-%   Detailed explanation goes here
+backtrack_step(w,u,v,lambda,...
+Delta_w,Delta_u,Delta_v,Delta_lambda,H,y,t,C,alpha,step_beta)
+%BACKTRACK_STEP Find the step at each iteration
+%   w,u,v,lambda: objective parameters
+%   Delta_w,Delta_u,Delta_v,Delta_lambda: current gradient of w,u,v,lambda
+%   H: y^T*Kernel*y
+%   y: train data labels
+%   t: Barrier method parameter t
+%   alpha: backtrack parameter
+%   step_beta: backtrack parameter
 positive_Delta_u = Delta_u;
 positive_Delta_u(Delta_u>0) = -u(Delta_u>0);
 positive_Delta_v = Delta_v;
@@ -19,7 +26,7 @@ while (1)
     lambda_temp = lambda + step_t * Delta_lambda;
     r_temp = r_norm(w_temp, u_temp, v_temp, lambda_temp, H, y, t, C);
 
-    if (sum([-w_temp; w_temp-C]>=0) == 0 && r_temp<=(1-alpha*step_t)*r_current)
+    if (sum([-w_temp; w_temp-C]>=0)==0 && r_temp<=(1-alpha*step_t)*r_current)
         break;
     end
     step_t = step_beta*step_t;

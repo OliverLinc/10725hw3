@@ -1,6 +1,13 @@
-function [w, beta, beta_0, obj] = train_svm_barrier(X, y, gamma, C, mu, alpha, step_beta, epsilon)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+function [w, beta, beta_0, obj] = ...
+    train_svm_barrier(X, y, gamma, C, mu, alpha, step_beta, epsilon)
+%TRAIN_SVM_BARRIER Train SVM with barrier method
+%   X, y: train data
+%   gamma: parameter in RBF kernel
+%   C: 0<=w<=C
+%   mu: Barrier method parameter, recommended 1000
+%   alpha: backtracking parameter
+%   step_beta: backtracking
+%   epsilon: precision at eta and norm of r
 TOL = 1e-5;
 
 shape = size(X);
@@ -38,7 +45,8 @@ while (1)
     
     % backtracking to determine step size t
 
-    step_t = backtrack_step(w,u,v,lambda,Delta_w,Delta_u,Delta_v,Delta_lambda,H,y,t,C,alpha,step_beta);
+    step_t = backtrack_step(w,u,v,lambda,...
+        Delta_w,Delta_u,Delta_v,Delta_lambda,H,y,t,C,alpha,step_beta);
     
     % update u,v,w,lambda
     u = u + step_t * Delta_u;
