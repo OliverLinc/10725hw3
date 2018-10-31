@@ -26,6 +26,12 @@ beta = X'*(alpha.*y);
 sv_index = alpha>1e-5;
 y_sv = y(sv_index,:);
 x_sv = X(sv_index,:);
-beta_0 = y_sv(1) - dot(x_sv(1,:), beta);
+
+sv = alpha(sv_index);
+c_idx = sv<C-1e-5;
+x_c = x_sv(c_idx,:);
+y_c = y_sv(c_idx,:);
+
+beta_0 = y_c(1) - dot(x_c(1,:), beta);
 end
 
